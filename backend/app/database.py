@@ -56,3 +56,9 @@ def create_db_engine(url: str) -> Engine:
 
 engine = create_db_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
+
+
+def get_db():
+    """FastAPI dependency: one database session per request, always closed afterwards."""
+    with SessionLocal() as session:
+        yield session

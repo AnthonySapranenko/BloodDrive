@@ -209,6 +209,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 alembic upgrade head        # create or update the local database (blooddrive.db)
+python -m app.seed_demo     # load clearly labeled demo drives (safe to re-run)
 python -m pytest            # run the tests
 fastapi dev app/main.py     # start the API at http://127.0.0.1:8000 (docs at /docs)
 ```
