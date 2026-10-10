@@ -198,6 +198,23 @@ Deploy the application, test it with a small number of real organizers if possib
 
 Improve accessibility, testing, reliability, performance, documentation, and the project presentation.
 
+## Local Development
+
+Local development uses SQLite (a single database file, no install needed). Production will use PostgreSQL; the switch is planned before deployment.
+
+Requirements: Python 3.13 or newer and Git. Run these from the `backend` folder in PowerShell:
+
+```
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+alembic upgrade head        # create or update the local database (blooddrive.db)
+python -m pytest            # run the tests
+fastapi dev app/main.py     # start the API at http://127.0.0.1:8000 (docs at /docs)
+```
+
+To use a different database, set the `DATABASE_URL` environment variable before running these commands.
+
 ## Current Status
 
 **Stage:** Planning and architecture.
