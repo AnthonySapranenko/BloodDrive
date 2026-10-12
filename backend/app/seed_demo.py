@@ -9,7 +9,7 @@ from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
-from app.models import BloodDrive, DriveStatus, Organization
+from app.models import BloodDrive, DriveStatus, Organization, OrganizationStatus
 
 
 def drive(org, title, days_from_now, hour_utc, hours, **fields) -> BloodDrive:
@@ -36,11 +36,13 @@ def seed(session: Session) -> None:
         name="Demo Student Blood Club",
         description="Fictional organization used for demonstration data.",
         website_url="https://example.com/demo-club",
+        status=OrganizationStatus.APPROVED,
         is_demo=True,
     )
     church = Organization(
         name="Demo Community Church",
         description="Fictional organization used for demonstration data.",
+        status=OrganizationStatus.APPROVED,
         is_demo=True,
     )
     pa = dict(city="State College", state="PA", postal_code="16801")

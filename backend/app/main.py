@@ -5,7 +5,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db, utc_now
-from app.models import BloodDrive, DriveStatus
+from app.models import BloodDrive, DriveStatus, Organization, OrganizationStatus
 from app.schemas import PublicDrive
 
 app = FastAPI(title="BloodDrive API")
@@ -32,7 +32,13 @@ def list_drives(
     query = (
         select(BloodDrive)
         .options(joinedload(BloodDrive.organization))
-        .where(BloodDrive.status.in_(PUBLIC_STATUSES), BloodDrive.ends_at > utc_now())
+        .join(BloodDrive.organization)
+        .where(
+            BloodDrive.status.in_(PUBLIC_STATUSES),
+            BloodDrive.ends_at > utc_now(),
+            # New organizations stay hidden until an admin approves them.
+            Organization.status == OrganizationStatus.APPROVED,
+        )
         .order_by(BloodDrive.starts_at)
     )
     if state:
