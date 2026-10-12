@@ -49,6 +49,12 @@ def run_migrations_online() -> None:
     engine = create_db_engine(database_url)
 
     with engine.connect() as connection:
+        if connection.dialect.name == "sqlite":
+            # Batch mode rebuilds a table by dropping and recreating it, which
+            # foreign keys pointing at that table would block. SQLite only accepts this
+            # outside a transaction, so commit the one SQLAlchemy just opened.
+            connection.exec_driver_sql("PRAGMA foreign_keys=OFF")
+            connection.commit()
         context.configure(
             connection=connection,
             target_metadata=target_metadata,

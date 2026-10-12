@@ -1,5 +1,8 @@
 import pytest
 
+from sqlalchemy import update
+
+from app.models import Organization, OrganizationStatus
 from app.seed_demo import seed
 
 
@@ -64,3 +67,14 @@ def test_seed_can_be_rerun_without_duplicates(seeded_client, db_session):
     seed(db_session)
 
     assert len(seeded_client.get("/drives").json()) == 3
+
+
+def test_drives_from_unapproved_organizations_are_hidden(seeded_client, db_session):
+    db_session.execute(
+        update(Organization)
+        .where(Organization.name == "Demo Community Church")
+        .values(status=OrganizationStatus.PENDING)
+    )
+    db_session.commit()
+
+    assert "[DEMO] Community Blood Drive" not in titles(seeded_client.get("/drives"))

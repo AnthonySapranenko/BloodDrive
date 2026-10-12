@@ -4,7 +4,16 @@ import pytest
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, StatementError
 
-from app.models import BloodDrive, DriveStatus, Organization
+from app.models import (
+    BloodDrive,
+    DriveStatus,
+    MembershipRole,
+    Organization,
+    OrganizationMembership,
+    OrganizationStatus,
+    User,
+    UserSession,
+)
 
 START = datetime(2026, 11, 14, 15, 0, tzinfo=UTC)
 
@@ -114,3 +123,56 @@ def test_cancelled_status_can_be_set(db_session):
     db_session.expire_all()
 
     assert drive.status == DriveStatus.CANCELLED
+
+
+def make_user(email: str = "organizer@example.com") -> User:
+    return User(email=email, name="Demo Organizer", password_hash="not-a-real-hash")
+
+
+def test_new_organization_starts_pending(db_session):
+    organization = make_organization()
+    db_session.add(organization)
+    db_session.commit()
+
+    assert organization.status == OrganizationStatus.PENDING
+
+
+def test_user_email_must_be_unique(db_session):
+    db_session.add_all([make_user(), make_user()])
+
+    with pytest.raises(IntegrityError, match="UNIQUE"):
+        db_session.commit()
+
+
+def test_membership_links_user_to_organization_as_owner(db_session):
+    user = make_user()
+    organization = make_organization()
+    db_session.add(OrganizationMembership(user=user, organization=organization))
+    db_session.commit()
+
+    assert user.memberships[0].organization is organization
+    assert user.memberships[0].role == MembershipRole.OWNER
+
+
+def test_user_can_join_an_organization_only_once(db_session):
+    user = make_user()
+    organization = make_organization()
+    db_session.add_all([
+        OrganizationMembership(user=user, organization=organization),
+        OrganizationMembership(user=user, organization=organization),
+    ])
+
+    with pytest.raises(IntegrityError, match="UNIQUE"):
+        db_session.commit()
+
+
+def test_session_token_hash_must_be_unique(db_session):
+    user = make_user()
+    expires_at = START + timedelta(days=14)
+    db_session.add_all([
+        UserSession(user=user, token_hash="a" * 64, expires_at=expires_at),
+        UserSession(user=user, token_hash="a" * 64, expires_at=expires_at),
+    ])
+
+    with pytest.raises(IntegrityError, match="UNIQUE"):
+        db_session.commit()
