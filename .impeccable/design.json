@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T00:00:00Z",
+  "title": "Design System: BloodDrive",
+  "extensions": {
+    "colorMeta": {
+      "ultramarine": { "role": "primary", "displayName": "Poster Ultramarine", "canonical": "#2f3dd9", "tonalRamp": ["oklch(15% 0.08 268)", "oklch(25% 0.13 268)", "oklch(35% 0.18 268)", "oklch(45% 0.23 268)", "oklch(55% 0.2 268)", "oklch(65% 0.15 268)", "oklch(80% 0.08 268)", "oklch(95% 0.02 268)"] },
+      "marigold": { "role": "secondary", "displayName": "Marigold", "canonical": "#ffb627", "tonalRamp": ["oklch(15% 0.04 75)", "oklch(25% 0.06 75)", "oklch(35% 0.08 75)", "oklch(45% 0.1 75)", "oklch(55% 0.12 75)", "oklch(65% 0.14 75)", "oklch(82% 0.17 75)", "oklch(95% 0.05 75)"] },
+      "marigold-hover": { "role": "secondary", "displayName": "Marigold Hover", "canonical": "#ffc552", "tonalRamp": ["oklch(15% 0.04 80)", "oklch(25% 0.06 80)", "oklch(35% 0.08 80)", "oklch(45% 0.1 80)", "oklch(55% 0.12 80)", "oklch(65% 0.13 80)", "oklch(85% 0.14 80)", "oklch(95% 0.05 80)"] },
+      "ground": { "role": "neutral", "displayName": "Periwinkle Ground", "canonical": "#f3f4ff", "tonalRamp": ["oklch(15% 0.015 280)", "oklch(25% 0.015 280)", "oklch(35% 0.015 280)", "oklch(45% 0.015 280)", "oklch(55% 0.015 280)", "oklch(65% 0.015 280)", "oklch(80% 0.015 280)", "oklch(97% 0.015 280)"] },
+      "ink": { "role": "neutral", "displayName": "Lineup Ink", "canonical": "#0d1033", "tonalRamp": ["oklch(15% 0.06 275)", "oklch(25% 0.07 275)", "oklch(35% 0.07 275)", "oklch(45% 0.06 275)", "oklch(55% 0.05 275)", "oklch(65% 0.04 275)", "oklch(80% 0.03 275)", "oklch(95% 0.01 275)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#2b2f57", "tonalRamp": ["oklch(15% 0.06 278)", "oklch(25% 0.07 278)", "oklch(33% 0.07 278)", "oklch(45% 0.06 278)", "oklch(55% 0.05 278)", "oklch(65% 0.04 278)", "oklch(80% 0.03 278)", "oklch(95% 0.01 278)"] },
+      "white": { "role": "neutral", "displayName": "White", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(80% 0 0)", "oklch(100% 0 0)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Headliner venue name only; uppercase, 62% width, balanced wrapping." },
+      "headline-large": { "displayName": "Headline Large", "purpose": "This week venue names; uppercase, 75% width." },
+      "headline-medium": { "displayName": "Headline Medium", "purpose": "Next week venue names; uppercase, 87% width." },
+      "title": { "displayName": "Title", "purpose": "Later venue names; uppercase, 100% width." },
+      "band": { "displayName": "Band", "purpose": "Tier names on a 3px ink rule; uppercase, 125% width." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "BLOODDRIVE in the masthead; 1.375rem below 720px." },
+      "when": { "displayName": "When", "purpose": "Date and local time line; headliner clamp(1.125rem, 2.5vw, 1.5rem), Later 0.9375rem." },
+      "body": { "displayName": "Body", "purpose": "Descriptions (max 65ch) and the masthead welcome (max 60ch)." },
+      "meta": { "displayName": "Meta", "purpose": "Address, organizer, capacity in soft ink." },
+      "label": { "displayName": "Label", "purpose": "Filter field labels; uppercase, 125% width." },
+      "tag": { "displayName": "Tag", "purpose": "DEMO and CANCELLED tags; uppercase, 125% width." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "none", "value": "none", "purpose": "State changes are instant; no transitions or animation." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "720px" },
+      { "name": "lg", "value": "960px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Register Button",
+      "kind": "button",
+      "refersTo": "register",
+      "description": "The single marigold action: external link to the organizer's official sign-up page.",
+      "html": "<a class=\"ds-register\" href=\"#\">Register <svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M6 3H3v10h10v-3M9 2h5v5M14 2 7 9\"/></svg></a>",
+      "css": ".ds-register { display: inline-flex; align-items: center; gap: 6px; background: #ffb627; color: #0d1033; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 800; font-size: 0.9375rem; padding: 10px 16px; border-radius: 4px; text-decoration: none; } .ds-register:hover { background: #ffc552; text-decoration: underline; text-underline-offset: 3px; } .ds-register:focus-visible { outline: 3px solid #0d1033; outline-offset: 2px; }"
+    },
+    {
+      "name": "Masthead Filter Button",
+      "kind": "button",
+      "refersTo": "button-filter",
+      "description": "Find drives, on the ultramarine masthead.",
+      "html": "<div class=\"ds-mast-bg\"><button class=\"ds-btn-filter\">Find drives</button> <button class=\"ds-btn-filter ds-btn-clear\">Clear</button></div>",
+      "css": ".ds-mast-bg { background: #2f3dd9; padding: 16px; display: flex; gap: 10px; } .ds-btn-filter { font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 800; font-size: 0.9375rem; cursor: pointer; border-radius: 4px; padding: 10px 16px; border: 2px solid #ffffff; background: #ffffff; color: #0d1033; } .ds-btn-filter:hover { background: #f3f4ff; } .ds-btn-clear { background: transparent; color: #ffffff; } .ds-btn-clear:hover { background: rgb(255 255 255 / 0.12); } .ds-btn-filter:focus-visible { outline: 3px solid #ffb627; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "text-button",
+      "description": "Underlined ultramarine recovery action on the ground (Try again, Show all drives).",
+      "html": "<button class=\"ds-text-button\">Try again</button>",
+      "css": ".ds-text-button { font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 800; padding: 0; border: 0; background: none; color: #2f3dd9; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; } .ds-text-button:focus-visible { outline: 3px solid #0d1033; outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Input",
+      "kind": "input",
+      "refersTo": "input-filter",
+      "description": "White field with a wide-cap label, inside the masthead.",
+      "html": "<div class=\"ds-mast-field\"><label class=\"ds-label\">City <input class=\"ds-input\" placeholder=\"e.g. State College\"></label></div>",
+      "css": ".ds-mast-field { background: #2f3dd9; color: #ffffff; padding: 16px; } .ds-label { display: grid; gap: 4px; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; font-stretch: 125%; letter-spacing: 0.1em; text-transform: uppercase; } .ds-input { font-family: inherit; font-size: 1rem; font-weight: 500; font-stretch: 100%; letter-spacing: 0; text-transform: none; color: #0d1033; background: #ffffff; border: 2px solid #ffffff; border-radius: 4px; padding: 9px 10px; } .ds-input::placeholder { color: #4b4f73; } .ds-input:focus-visible { outline: 3px solid #ffb627; outline-offset: 2px; } .ds-input:invalid:not(:placeholder-shown) { border-color: #ffb627; }"
+    },
+    {
+      "name": "Masthead",
+      "kind": "nav",
+      "refersTo": "masthead",
+      "description": "Full-bleed ultramarine field with the wide-cap wordmark and welcome line.",
+      "html": "<header class=\"ds-masthead\"><h1 class=\"ds-wordmark\">BloodDrive</h1><p class=\"ds-welcome\">Upcoming blood drives near you. Pick one, then sign up on the organizer's official page.</p></header>",
+      "css": ".ds-masthead { background: #2f3dd9; color: #ffffff; padding: 28px 16px 24px; font-family: 'Archivo Variable', system-ui, sans-serif; } .ds-wordmark { margin: 0; font-weight: 900; font-stretch: 125%; font-size: 1.75rem; letter-spacing: 0.02em; text-transform: uppercase; } .ds-welcome { margin: 4px 0 0; font-size: 0.9375rem; max-width: 60ch; }"
+    },
+    {
+      "name": "Status Tags",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Outlined DEMO tag and solid ink CANCELLED tag; status is always said in words.",
+      "html": "<span class=\"ds-tag ds-tag-solid\">Cancelled</span> <span class=\"ds-tag\">Demo</span>",
+      "css": ".ds-tag { display: inline-block; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.6875rem; font-weight: 800; font-stretch: 125%; letter-spacing: 0.1em; text-transform: uppercase; color: #0d1033; border: 1.5px solid #0d1033; border-radius: 3px; padding: 2px 6px; } .ds-tag-solid { background: #0d1033; color: #ffffff; }"
+    },
+    {
+      "name": "Tier Band",
+      "kind": "custom",
+      "refersTo": "band",
+      "description": "Tier name in wide black caps on a 3px ink rule.",
+      "html": "<h2 class=\"ds-band\">Next week</h2>",
+      "css": ".ds-band { margin: 0 0 16px; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: clamp(1.125rem, 3vw, 1.5rem); font-weight: 900; font-stretch: 125%; letter-spacing: 0.04em; text-transform: uppercase; color: #0d1033; border-top: 3px solid #0d1033; padding-top: 10px; }"
+    },
+    {
+      "name": "Headliner Drive Entry",
+      "kind": "card",
+      "refersTo": "display",
+      "description": "Headliner billing row: condensed venue left, when line with inline lead, meta and Register right.",
+      "html": "<article class=\"ds-drive\"><h3 class=\"ds-venue\">Demo Student Union</h3><div><p class=\"ds-when\"><span class=\"ds-lead\">Next up · </span>Thu, Oct 15 · 10:00 AM – 4:00 PM EDT</p><p class=\"ds-meta\">100 Example Ave, State College, PA 16801</p><p class=\"ds-meta\">Fall Campus Blood Drive · Demo Student Blood Club</p></div></article>",
+      "css": ".ds-drive { display: grid; grid-template-columns: minmax(0, 3fr) minmax(200px, 2fr); column-gap: 48px; align-items: end; background: #f3f4ff; color: #0d1033; padding: 20px 16px; font-family: 'Archivo Variable', system-ui, sans-serif; font-variant-numeric: tabular-nums; line-height: 1.4; } .ds-venue { margin: 0; font-weight: 900; font-stretch: 62%; font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; line-height: 0.95; text-wrap: balance; } .ds-when { margin: 0; font-weight: 800; font-size: clamp(1.125rem, 2.5vw, 1.5rem); } .ds-lead { text-transform: uppercase; font-stretch: 125%; letter-spacing: 0.04em; } .ds-meta { margin: 2px 0 0; font-size: 0.875rem; color: #2b2f57; }"
+    },
+    {
+      "name": "Cancelled Venue",
+      "kind": "custom",
+      "refersTo": "title",
+      "description": "Ultramarine band across the lower letters of a cancelled venue name, paired with the solid CANCELLED tag.",
+      "html": "<h3 class=\"ds-venue-small\"><span class=\"ds-cancelled\">Demo Recreation Center</span></h3>",
+      "css": ".ds-venue-small { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-weight: 900; font-stretch: 100%; font-size: 1.25rem; text-transform: uppercase; line-height: 0.95; color: #0d1033; } .ds-cancelled { background: linear-gradient(transparent 64%, #2f3dd9 64%, #2f3dd9 76%, transparent 76%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lineup Poster",
+    "overview": "BloodDrive bills blood drives the way a festival poster bills acts. The soonest drive headlines at poster scale; everything after it steps down in tiers (This week, Next week, Later), each tier smaller and wider than the one above. One variable family, Archivo, does all of the tiering through its width axis: condensed black caps for the names that matter most, wide caps for bands, labels and tags. The page is a flat printed sheet: an ultramarine masthead field over a periwinkle-white ground, ink type, heavy and hairline rules, and one marigold action.\n\nDensity is poster-like rather than app-like. There are no cards, no panels, no shadows; structure comes from type size, rules and two-column billing rows on wide screens. Color stays cool and calm on purpose: the system avoids the clinical hospital look and keeps red out of the palette. Every status is said in words (CANCELLED, DEMO) before it is shown in color.\n\nMotion is absent: state changes are instant.",
+    "keyCharacteristics": [
+      "Venue names in heavy uppercase, condensed at the top and widening tier by tier (62%, 75%, 87%, 100% width).",
+      "Wide-cap bands sit on a 3px ink rule; acts inside a band are split by 1px ink hairlines.",
+      "Ultramarine masthead, periwinkle-white page, ink text, marigold Register.",
+      "Flat surfaces, 4px corners, no elevation.",
+      "Tabular numerals everywhere, so dates and times line up."
+    ],
+    "rules": [
+      { "name": "The One Action Rule", "body": "Marigold fills exactly one kind of element: the Register link. It never decorates, never becomes a background band, and never marks a second button.", "section": "colors" },
+      { "name": "The Full Contrast Rule", "body": "Text is ink, soft ink, or white on ultramarine. No grey text below WCAG AA anywhere.", "section": "colors" },
+      { "name": "The Lineup Rule", "body": "Importance is width and size, never color. The nearer the drive, the larger and more condensed its venue name; each tier steps one notch wider and smaller.", "section": "typography" },
+      { "name": "The Wide Caps Rule", "body": "Short structural words (wordmark, bands, labels, tags, the headliner lead) are wide 125% caps with positive tracking. Running text is never set in caps.", "section": "typography" },
+      { "name": "The Printed Sheet Rule", "body": "Nothing floats. Hierarchy is carried by type and rules, never by shadow or card containers.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do size venue names by date proximity: 62% width for the headliner, then 75%, 87% and 100% by tier.",
+      "Do open every tier after the headliner with a wide-cap band on a 3px ink rule, and split entries with a 1px ink hairline.",
+      "Do say every status in words with a tag (DEMO outlined, CANCELLED solid ink); color only reinforces it.",
+      "Do lay out each drive as a two-column billing row from 960px, venue left, details right.",
+      "Do keep numerals tabular and show times in the drive's own timezone.",
+      "Do mark external Register links with the inline icon and screen-reader text."
+    ],
+    "donts": [
+      "Don't use marigold for anything but Register and the functional signals listed under Colors.",
+      "Don't put drives in stacked white cards, panels or shadowed containers.",
+      "Don't add red, gore or clinical hospital cues to the palette or imagery.",
+      "Don't set text in grey below WCAG AA; soft ink is the lightest text on the ground.",
+      "Don't add a label above the venue name; the headliner's lead lives inline in the when line.",
+      "Don't add decorative gradients; the only gradient is the hard-stopped cancelled band.",
+      "Don't add motion beyond instant state changes."
+    ]
+  }
+}

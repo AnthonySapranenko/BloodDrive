@@ -1,0 +1,141 @@
+:root {
+  --ultramarine: #2f3dd9;
+  --ground: #f3f4ff;
+  --ink: #0d1033;
+  --ink-soft: #2b2f57;
+  --marigold: #ffb627;
+  --white: #ffffff;
+  --rule: 1px solid var(--ink);
+
+  font-family: 'Archivo Variable', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--ground);
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  scrollbar-color: var(--ultramarine) var(--ground);
+  caret-color: var(--ultramarine);
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); }
+h1, h2, h3, p { margin: 0; }
+::selection { background: var(--marigold); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+a { color: inherit; text-underline-offset: 3px; }
+
+.wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Masthead */
+.masthead { background: var(--ultramarine); color: var(--white); padding: 20px 0 18px; }
+.masthead :focus-visible { outline-color: var(--marigold); }
+.wordmark {
+  font-weight: 900; font-stretch: 125%; font-size: 1.375rem;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.welcome { margin-top: 4px; font-size: 0.9375rem; max-width: 60ch; }
+.filters {
+  display: grid; grid-template-columns: 5rem 1fr 6.5rem; gap: 8px 10px;
+  margin-top: 16px; align-items: end;
+}
+.filters label {
+  display: grid; gap: 4px; font-size: 0.75rem; font-weight: 700;
+  font-stretch: 125%; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.filters input {
+  font: inherit; font-size: 1rem; font-weight: 500; font-stretch: 100%;
+  letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--white);
+  border: 2px solid var(--white); border-radius: 4px; padding: 9px 10px; min-width: 0;
+}
+.filters input::placeholder { color: #4b4f73; }
+.filters input:invalid:not(:placeholder-shown) { border-color: var(--marigold); }
+.filter-actions { grid-column: 1 / -1; display: flex; gap: 10px; }
+.filters button {
+  font: inherit; font-weight: 800; font-size: 0.9375rem; cursor: pointer;
+  border-radius: 4px; padding: 10px 16px; border: 2px solid var(--white);
+  background: var(--white); color: var(--ink);
+}
+.filters button:hover { background: var(--ground); }
+.filters .clear { background: transparent; color: var(--white); }
+.filters .clear:hover { background: rgb(255 255 255 / 0.12); }
+
+/* Tiers */
+main { padding-bottom: 32px; }
+.status { padding: 32px 0; font-size: 1.0625rem; }
+.status.error { font-weight: 700; }
+.text-button {
+  font: inherit; font-weight: 800; margin-top: 12px; padding: 0; border: 0;
+  background: none; color: var(--ultramarine); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer;
+}
+.demo-notice { padding: 14px 0; border-bottom: var(--rule); font-size: 0.875rem; }
+.demo-notice .tag { margin-right: 6px; }
+.tier { padding-bottom: 28px; }
+.tier.headliner { padding-top: 20px; }
+/* Tier names are bands on a heavy rule, like the billing lines of a lineup. */
+.tier-name {
+  font-size: clamp(1.125rem, 3vw, 1.5rem); font-weight: 900; font-stretch: 125%;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  border-top: 3px solid var(--ink); padding-top: 10px; margin-bottom: 16px;
+}
+.drives { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+.drives > li + li { border-top: var(--rule); padding-top: 24px; }
+
+/* Drive entries: width and size step down by tier, the Lineup move. */
+.venue { font-weight: 900; text-transform: uppercase; line-height: 0.95; text-wrap: balance; }
+.drive.headline .venue { font-stretch: 62%; font-size: clamp(4rem, 12vw, 6rem); }
+.drive.large .venue { font-stretch: 75%; font-size: clamp(2.5rem, 7vw, 3.25rem); }
+.drive.medium .venue { font-stretch: 87%; font-size: clamp(2.125rem, 5vw, 2.5rem); }
+.drive.small .venue { font-stretch: 100%; font-size: 1.25rem; }
+.lead { text-transform: uppercase; font-stretch: 125%; letter-spacing: 0.04em; }
+.when { font-weight: 800; margin-top: 8px; }
+.drive.headline .when { font-size: clamp(1.125rem, 2.5vw, 1.5rem); }
+.drive.large .when, .drive.medium .when { font-size: 1.0625rem; }
+.drive.small .when { font-size: 0.9375rem; margin-top: 4px; }
+.meta { font-size: 0.875rem; color: var(--ink-soft); margin-top: 2px; }
+.description { font-size: 0.9375rem; margin-top: 8px; max-width: 65ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+.drive.small .actions { margin-top: 8px; }
+
+.register {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--marigold); color: var(--ink); font-weight: 800; font-size: 0.9375rem;
+  padding: 10px 16px; border-radius: 4px; text-decoration: none;
+}
+.register:hover { background: #ffc552; text-decoration: underline; }
+.drive.headline .register { font-size: 1.0625rem; padding: 12px 20px; }
+
+.tag {
+  display: inline-block; font-size: 0.6875rem; font-weight: 800; font-stretch: 125%;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1.5px solid var(--ink); border-radius: 3px; padding: 2px 6px;
+}
+.tag.solid { background: var(--ink); color: var(--white); }
+.nowrap { white-space: nowrap; }
+/* Cancelled: an ultramarine bar across the lower letters, clear of the C/G openings, so the name stays readable. */
+.drive.cancelled .venue span {
+  background: linear-gradient(transparent 64%, var(--ultramarine) 64%, var(--ultramarine) 76%, transparent 76%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+
+.footer { padding: 24px 16px 40px; font-size: 0.8125rem; color: var(--ink-soft); }
+.footer p { max-width: 70ch; }
+
+/* Wider screens: filters on one row; smaller tiers spread into columns. */
+@media (min-width: 720px) {
+  .masthead { padding: 28px 0 24px; }
+  .wordmark { font-size: 1.75rem; }
+  .filters { grid-template-columns: 7rem minmax(12rem, 1fr) 9rem auto; }
+  .filter-actions { grid-column: auto; }
+}
+
+/* Desktop: every act is a billing row, venue on the left, when, where and Register beside it. */
+@media (min-width: 960px) {
+  .drive { display: grid; grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr); column-gap: 48px; align-items: baseline; }
+  .drive.headline { align-items: end; }
+  .drive .when { margin-top: 0; }
+}

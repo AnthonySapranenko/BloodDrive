@@ -216,9 +216,19 @@ fastapi dev app/main.py     # start the API at http://127.0.0.1:8000 (docs at /d
 
 To use a different database, set the `DATABASE_URL` environment variable before running these commands.
 
+The frontend (React + TypeScript, built with Vite) needs Node.js 20 or newer. With the API running, open a second terminal in the `frontend` folder:
+
+```
+npm install
+npm test                    # run the frontend tests
+npm run dev                 # start the site at http://localhost:5173 (API calls are forwarded to port 8000)
+```
+
+Design context lives in `PRODUCT.md` (who the product is for) and `DESIGN.md` (the visual system).
+
 ## Current Status
 
-**Stage:** Planning and architecture.
+**Stage:** Milestone 2, public directory. The API and the public drive directory page work locally with demo data.
 
 The product direction is an organizer-focused blood-drive management platform with public discovery. No production data integrations should be assumed to exist.
 
