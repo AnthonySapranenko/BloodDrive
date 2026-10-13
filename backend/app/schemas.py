@@ -1,8 +1,13 @@
 from datetime import datetime
+from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, StringConstraints
 
-from app.models import DriveStatus
+from app.models import DriveStatus, MembershipRole, OrganizationStatus
+
+Name = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
+# Long enough to be guessable only slowly; capped so huge inputs can't make hashing slow.
+Password = Annotated[str, StringConstraints(min_length=8, max_length=128)]
 
 
 class PublicOrganization(BaseModel):
@@ -38,3 +43,34 @@ class PublicDrive(BaseModel):
     status: DriveStatus
     is_demo: bool
     organization: PublicOrganization
+
+
+class SignupIn(BaseModel):
+    """One form creates the organizer account and their organization."""
+
+    name: Name
+    email: EmailStr
+    password: Password
+    organization_name: Name
+
+
+class LoginIn(BaseModel):
+    email: EmailStr
+    # No minimum here: a wrong password should get "Invalid email or password", not a 422.
+    password: Annotated[str, StringConstraints(max_length=128)]
+
+
+class MyOrganization(BaseModel):
+    id: int
+    name: str
+    status: OrganizationStatus
+    role: MembershipRole
+
+
+class Me(BaseModel):
+    """The signed-in user. Never includes the password hash."""
+
+    id: int
+    name: str
+    email: str
+    organizations: list[MyOrganization]
