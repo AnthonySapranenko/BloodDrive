@@ -4,11 +4,11 @@ Handoff notes, last updated 2026-10-13. Read this, `README.md` and `BOSS.md` bef
 
 ## Where things stand
 
-- **Branch:** `organizer-auth`. Step 2 is committed locally; push it when you're ready.
+- **Branch:** `organizer-auth`. Steps 2 and 3 are committed locally; push when you're ready.
 - **`main`:** unchanged at `b8f2ec2 Add public drive directory frontend`.
 - **Tests:** 52 backend tests pass. Run them from `backend` with `.\.venv\Scripts\python.exe -m pytest` (the venv lives in `backend/.venv`).
 - **Local database:** at migration `b6824990c554`. Step 2 didn't change the schema.
-- **Milestone:** 3, organizer management. Steps 1 and 2 of 3 are done.
+- **Milestone:** 3, organizer management. Steps 1–3 are done; drive management is next.
 
 ## Decisions made this session
 
@@ -66,10 +66,17 @@ Always read generated migrations before running them.
 - `python -m app.approve_org` lists pending organizations, and `python -m app.approve_org <id>` approves one.
 - Tests are in `backend/tests/test_auth.py`.
 
+## Step 3 (done 2026-10-13): sign-up and sign-in pages
+
+- React Router 8 (`BrowserRouter` in `main.tsx`, routes in `App.tsx`). Pages: `/signup`, `/login`, `/organizer` (redirects to `/login` when signed out).
+- API calls in `frontend/src/auth.ts`, pages in `frontend/src/OrganizerPages.tsx`, tests in `frontend/src/auth.test.ts`.
+- Checked end to end through the Vite proxy with curl; not clicked through in a real browser yet.
+- **Watch out:** the Vite proxy forwards every path starting with `/drives`, so a future `/drives/:id` page would be swallowed. Move the API under `/api` before adding one.
+- **Port clash:** another local project uses ports 5173 and 8000. Stop it before running BloodDrive's dev servers.
+
 ## Next
 
-- **Step 3: sign-up and sign-in pages in the frontend.** Write a short plan first, because these pages need routing and React Router isn't installed. Also add `/auth` to the proxy in `frontend/vite.config.ts`.
-- **Then: drive management.** Organizers create, edit, publish and unpublish their own drives, protected by `require_org_member`. This needs its own plan.
+- **Drive management.** Organizers create, edit, publish and unpublish their own drives, protected by `require_org_member`. This needs its own plan.
 - **When Milestone 3 is done:** open a pull request from `organizer-auth` to `main`.
 
 ## Deferred on purpose
