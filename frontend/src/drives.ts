@@ -13,7 +13,7 @@ export type Drive = {
   postal_code: string
   registration_url: string | null
   capacity: number | null
-  status: 'published' | 'cancelled'
+  status: 'draft' | 'published' | 'cancelled'
   is_demo: boolean
   organization: {
     id: number

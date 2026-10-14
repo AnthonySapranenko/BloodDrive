@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, Route, Routes } from 'react-router'
 
 import { buildLineup, fetchDrives, formatWhen, safeExternalUrl, type Drive, type Filters } from './drives'
+import { DriveEditor } from './DriveEditor'
 import { LoginPage, OrganizerHome, SignupPage } from './OrganizerPages'
 
 const NO_FILTERS: Filters = { state: '', city: '', zip: '' }
@@ -19,6 +20,8 @@ export default function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/organizer" element={<OrganizerHome />} />
+      <Route path="/organizer/orgs/:orgId/drives/new" element={<DriveEditor />} />
+      <Route path="/organizer/orgs/:orgId/drives/:driveId" element={<DriveEditor />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

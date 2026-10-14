@@ -4,11 +4,11 @@ Handoff notes, last updated 2026-10-13. Read this, `README.md` and `BOSS.md` bef
 
 ## Where things stand
 
-- **Branch:** `organizer-auth`. Steps 2 and 3 are committed locally; push when you're ready.
+- **Branch:** `organizer-auth`. Everything through drive management is committed locally; push when you're ready.
 - **`main`:** unchanged at `b8f2ec2 Add public drive directory frontend`.
-- **Tests:** 52 backend tests pass. Run them from `backend` with `.\.venv\Scripts\python.exe -m pytest` (the venv lives in `backend/.venv`).
+- **Tests:** 72 backend tests and 18 frontend tests pass. Run them from `backend` with `.\.venv\Scripts\python.exe -m pytest` (the venv lives in `backend/.venv`).
 - **Local database:** at migration `b6824990c554`. Step 2 didn't change the schema.
-- **Milestone:** 3, organizer management. Steps 1–3 are done; drive management is next.
+- **Milestone:** 3, organizer management. Auth and drive management are built. What's left: a real-browser click-through, then the pull request.
 
 ## Decisions made this session
 
@@ -74,16 +74,26 @@ Always read generated migrations before running them.
 - Afterwards, every API route moved under `/api` (except `/health`), so the Vite proxy has one rule and frontend pages can't collide with API paths.
 - **Port clash:** another local project uses ports 5173 and 8000. Stop it before running BloodDrive's dev servers.
 
+## Drive management (done 2026-10-13)
+
+- **API** (`backend/app/drive_management.py`): `GET/POST /api/organizations/{org_id}/drives`, `GET/PUT/DELETE .../drives/{drive_id}`. Members only. A drive is looked up by id and `org_id`, so another organization's drive returns 404; a test proves this fails if the check is removed.
+- **Times:** organizers enter local wall-clock times plus a timezone (`DriveIn` in `schemas.py`). The API converts them to UTC with `zoneinfo`. On Windows this needs the `tzdata` package, which is now in `requirements.txt`.
+- **Status:** saved through `PUT` (draft, published or cancelled). Only drafts can be deleted.
+- **Frontend:** `/organizer` lists each organization's drives. `DriveEditor.tsx` handles `/organizer/orgs/:orgId/drives/new` and `/organizer/orgs/:orgId/drives/:driveId`. The API helpers and form conversion are in `organizerDrives.ts`.
+- **Checked:** end to end through the proxy with curl. Not yet clicked through in a real browser.
+
 ## Next
 
-- **Drive management.** Organizers create, edit, publish and unpublish their own drives, protected by `require_org_member`. This needs its own plan.
-- **When Milestone 3 is done:** open a pull request from `organizer-auth` to `main`.
+- **Click through the organizer pages in a browser:** sign up, create a drive, publish, edit, unpublish, cancel, delete a draft. Check them on a phone-width window too.
+- **Then open a pull request** from `organizer-auth` to `main` to close Milestone 3.
+- **Then Milestone 4 (deployment):** switch to PostgreSQL, add login rate limiting, set `COOKIE_SECURE=true`, make the host serve `index.html` for frontend routes, and choose a host.
 
 ## Deferred on purpose
 
 - **Email verification and password reset by email:** these need an email-sending service. Until then, use admin scripts.
 - **Login rate limiting:** add before deployment (Milestone 4). Until then, nothing limits how many passwords someone can try.
 - **Inviting more members to an organization:** the table supports it, but there's no feature for it yet.
+- **Drives that run overnight:** the form has one date for both start and end. Add an end date if organizers need it.
 - **Clearing out expired session rows:** they're rejected when used, but nothing deletes them yet.
 - **Switching to PostgreSQL** before deployment (already planned). The new migration hasn't been tested on PostgreSQL.
 

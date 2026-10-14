@@ -2,8 +2,10 @@ import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router'
 
 import { fetchMe, login, logout, signup, type Me, type SignupForm } from './auth'
+import { formatWhen, type Drive } from './drives'
+import { NotSignedInError, listOwnDrives } from './organizerDrives'
 
-function OrganizerLayout({ title, children }: { title: string; children: ReactNode }) {
+export function OrganizerLayout({ title, children }: { title: string; children: ReactNode }) {
   return (
     <>
       <header className="masthead">
@@ -44,7 +46,7 @@ function useAuthForm(send: (fields: Record<string, string>) => Promise<Me>) {
   return { error, busy, onSubmit }
 }
 
-function FormError({ message }: { message: string | null }) {
+export function FormError({ message }: { message: string | null }) {
   return message ? (
     <p className="form-message" role="alert">
       {message}
@@ -167,6 +169,7 @@ export function OrganizerHome() {
                   <span className="tag">Approved</span> Your published drives appear in the public directory.
                 </p>
               )}
+              <OrgDrives orgId={org.id} />
             </section>
           ))}
           <button type="button" className="text-button" onClick={signOut}>
@@ -175,5 +178,43 @@ export function OrganizerHome() {
         </>
       )}
     </OrganizerLayout>
+  )
+}
+
+function OrgDrives({ orgId }: { orgId: number }) {
+  const navigate = useNavigate()
+  const [drives, setDrives] = useState<Drive[] | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    listOwnDrives(orgId)
+      .then(setDrives)
+      .catch((err: Error) => (err instanceof NotSignedInError ? navigate('/login') : setError(err.message)))
+  }, [orgId, navigate])
+
+  return (
+    <>
+      <FormError message={error} />
+      {drives?.length === 0 && <p className="meta">No drives yet.</p>}
+      {drives && drives.length > 0 && (
+        <ul className="own-drives">
+          {drives.map((drive) => {
+            const { date, time } = formatWhen(drive)
+            return (
+              <li key={drive.id}>
+                <Link to={`/organizer/orgs/${orgId}/drives/${drive.id}`}>{drive.title}</Link>
+                <span className="meta">
+                  {date} · {time} · {drive.venue_name}
+                </span>
+                <span className={`tag${drive.status === 'cancelled' ? ' solid' : ''}`}>{drive.status}</span>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+      <Link className="button" to={`/organizer/orgs/${orgId}/drives/new`}>
+        New drive
+      </Link>
+    </>
   )
 }
