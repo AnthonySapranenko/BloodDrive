@@ -17,7 +17,7 @@ def titles(response) -> list[str]:
 
 
 def test_lists_only_public_upcoming_drives_soonest_first(seeded_client):
-    response = seeded_client.get("/drives")
+    response = seeded_client.get("/api/drives")
 
     assert response.status_code == 200
     # The draft and the already-ended drive are hidden; the cancelled one stays visible.
@@ -29,7 +29,7 @@ def test_lists_only_public_upcoming_drives_soonest_first(seeded_client):
 
 
 def test_response_includes_status_demo_flag_and_organization(seeded_client):
-    winter = seeded_client.get("/drives", params={"city": "Pittsburgh"}).json()[0]
+    winter = seeded_client.get("/api/drives", params={"city": "Pittsburgh"}).json()[0]
 
     assert winter["status"] == "cancelled"
     assert winter["is_demo"] is True
@@ -49,7 +49,7 @@ def test_response_includes_status_demo_flag_and_organization(seeded_client):
     ],
 )
 def test_filters(seeded_client, params, expected_count):
-    response = seeded_client.get("/drives", params=params)
+    response = seeded_client.get("/api/drives", params=params)
 
     assert response.status_code == 200
     assert len(response.json()) == expected_count
@@ -60,13 +60,13 @@ def test_filters(seeded_client, params, expected_count):
     [{"state": "Pennsylvania"}, {"state": "P1"}, {"zip": "1680"}, {"zip": "16801-1234"}, {"zip": "abcde"}],
 )
 def test_invalid_filters_are_rejected(seeded_client, params):
-    assert seeded_client.get("/drives", params=params).status_code == 422
+    assert seeded_client.get("/api/drives", params=params).status_code == 422
 
 
 def test_seed_can_be_rerun_without_duplicates(seeded_client, db_session):
     seed(db_session)
 
-    assert len(seeded_client.get("/drives").json()) == 3
+    assert len(seeded_client.get("/api/drives").json()) == 3
 
 
 def test_drives_from_unapproved_organizations_are_hidden(seeded_client, db_session):
@@ -77,4 +77,4 @@ def test_drives_from_unapproved_organizations_are_hidden(seeded_client, db_sessi
     )
     db_session.commit()
 
-    assert "[DEMO] Community Blood Drive" not in titles(seeded_client.get("/drives"))
+    assert "[DEMO] Community Blood Drive" not in titles(seeded_client.get("/api/drives"))

@@ -22,7 +22,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/drives", response_model=list[PublicDrive])
+@app.get("/api/drives", response_model=list[PublicDrive])
 def list_drives(
     db: Annotated[Session, Depends(get_db)],
     state: Annotated[str | None, Query(pattern=r"^[A-Za-z]{2}$")] = None,

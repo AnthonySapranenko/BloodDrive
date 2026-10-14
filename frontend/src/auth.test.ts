@@ -21,7 +21,7 @@ describe('signup', () => {
 
     expect(await signup(FORM)).toEqual(ME)
     // The backend only accepts JSON, which is part of its CSRF protection.
-    expect(fetchMock).toHaveBeenCalledWith('/auth/signup', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(FORM),

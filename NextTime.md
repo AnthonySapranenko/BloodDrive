@@ -36,7 +36,7 @@ Other rules agreed in the plan:
   - `user_sessions`: token_hash (unique), user, expires_at.
 - **`organizations.status`:** `pending` or `approved`. New organizations default to `pending`. The migration marks organizations that already existed as `approved`.
 - **`string_enum` helper** in `models.py`, shared by all status and role fields.
-- **Public directory** (`GET /drives`) now only lists drives from approved organizations.
+- **Public directory** (`GET /api/drives`) now only lists drives from approved organizations.
 - **Demo seed** creates its organizations as `approved`.
 - **New tests:**
   - the migration keeps existing data
@@ -61,7 +61,7 @@ Always read generated migrations before running them.
 
 ## Step 2 (done 2026-10-13): sign-up and sign-in API
 
-- `backend/app/auth.py`: `POST /auth/signup`, `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`, plus the `current_user` and `require_org_member` dependencies.
+- `backend/app/auth.py`: `POST /api/auth/signup`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`, plus the `current_user` and `require_org_member` dependencies.
 - Cookie name `session_token`. Set `COOKIE_SECURE=true` in production.
 - `python -m app.approve_org` lists pending organizations, and `python -m app.approve_org <id>` approves one.
 - Tests are in `backend/tests/test_auth.py`.
@@ -71,7 +71,7 @@ Always read generated migrations before running them.
 - React Router 8 (`BrowserRouter` in `main.tsx`, routes in `App.tsx`). Pages: `/signup`, `/login`, `/organizer` (redirects to `/login` when signed out).
 - API calls in `frontend/src/auth.ts`, pages in `frontend/src/OrganizerPages.tsx`, tests in `frontend/src/auth.test.ts`.
 - Checked end to end through the Vite proxy with curl; not clicked through in a real browser yet.
-- **Watch out:** the Vite proxy forwards every path starting with `/drives`, so a future `/drives/:id` page would be swallowed. Move the API under `/api` before adding one.
+- Afterwards, every API route moved under `/api` (except `/health`), so the Vite proxy has one rule and frontend pages can't collide with API paths.
 - **Port clash:** another local project uses ports 5173 and 8000. Stop it before running BloodDrive's dev servers.
 
 ## Next

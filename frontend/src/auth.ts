@@ -21,7 +21,7 @@ function post(path: string, body?: object): Promise<Response> {
 }
 
 export async function signup(form: SignupForm): Promise<Me> {
-  const response = await post('/auth/signup', form)
+  const response = await post('/api/auth/signup', form)
   if (response.status === 409) throw new Error('An account with this email already exists.')
   if (response.status === 422) throw new Error('Check the form: use a valid email and a password of 8 to 128 characters.')
   if (!response.ok) throw new Error(TRY_AGAIN)
@@ -29,7 +29,7 @@ export async function signup(form: SignupForm): Promise<Me> {
 }
 
 export async function login(email: string, password: string): Promise<Me> {
-  const response = await post('/auth/login', { email, password })
+  const response = await post('/api/auth/login', { email, password })
   if (response.status === 401) throw new Error('Invalid email or password.')
   if (response.status === 422) throw new Error('Enter a valid email address.')
   if (!response.ok) throw new Error(TRY_AGAIN)
@@ -37,13 +37,13 @@ export async function login(email: string, password: string): Promise<Me> {
 }
 
 export async function logout(): Promise<void> {
-  const response = await post('/auth/logout')
+  const response = await post('/api/auth/logout')
   if (!response.ok) throw new Error(TRY_AGAIN)
 }
 
 /** The signed-in user, or null when nobody is signed in. */
 export async function fetchMe(): Promise<Me | null> {
-  const response = await fetch('/auth/me').catch(() => {
+  const response = await fetch('/api/auth/me').catch(() => {
     throw new Error("Couldn't reach BloodDrive. Check your connection and try again.")
   })
   if (response.status === 401) return null

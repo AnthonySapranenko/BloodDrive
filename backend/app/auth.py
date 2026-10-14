@@ -31,7 +31,7 @@ password_hasher = PasswordHasher()
 # Checked when the email is unknown, so a failed sign-in takes the same time either way.
 DUMMY_HASH = password_hasher.hash("not-a-real-password")
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 DbSession = Annotated[Session, Depends(get_db)]
 SessionToken = Annotated[str | None, Cookie(alias=SESSION_COOKIE)]

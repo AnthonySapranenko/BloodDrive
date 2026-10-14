@@ -26,13 +26,13 @@ SIGNUP = {
 
 @pytest.fixture
 def signed_up(client):
-    response = client.post("/auth/signup", json=SIGNUP)
+    response = client.post("/api/auth/signup", json=SIGNUP)
     assert response.status_code == 201
     return response
 
 
 def login(client, email="ada@example.com", password=SIGNUP["password"]):
-    return client.post("/auth/login", json={"email": email, "password": password})
+    return client.post("/api/auth/login", json={"email": email, "password": password})
 
 
 def test_signup_creates_user_pending_org_and_owner_membership(signed_up, db_session):
@@ -51,11 +51,11 @@ def test_signup_creates_user_pending_org_and_owner_membership(signed_up, db_sess
 
 
 def test_signup_signs_the_user_in(signed_up, client):
-    assert client.get("/auth/me").json()["email"] == "ada@example.com"
+    assert client.get("/api/auth/me").json()["email"] == "ada@example.com"
 
 
 def test_duplicate_email_returns_409_regardless_of_case(signed_up, client, db_session):
-    response = client.post("/auth/signup", json=SIGNUP | {"email": "ADA@example.COM"})
+    response = client.post("/api/auth/signup", json=SIGNUP | {"email": "ADA@example.COM"})
 
     assert response.status_code == 409
     assert len(db_session.scalars(select(Organization)).all()) == 1  # Nothing half-created.
@@ -66,7 +66,7 @@ def test_duplicate_email_returns_409_regardless_of_case(signed_up, client, db_se
     [("password", "short"), ("password", "x" * 129), ("email", "not-an-email"), ("name", "   ")],
 )
 def test_invalid_signup_is_rejected(client, field, value):
-    assert client.post("/auth/signup", json=SIGNUP | {field: value}).status_code == 422
+    assert client.post("/api/auth/signup", json=SIGNUP | {field: value}).status_code == 422
 
 
 def test_login_ignores_email_case(signed_up, client):
@@ -92,25 +92,25 @@ def test_bad_login_gets_the_same_401(signed_up, client, email, password):
 def test_login_requires_a_json_body(signed_up, client):
     # A plain HTML form on another site can't send JSON, which is part of the CSRF protection.
     form = {"email": "ada@example.com", "password": SIGNUP["password"]}
-    assert client.post("/auth/login", data=form).status_code == 422
+    assert client.post("/api/auth/login", data=form).status_code == 422
 
 
 def test_me_without_a_cookie_returns_401(client):
-    assert client.get("/auth/me").status_code == 401
+    assert client.get("/api/auth/me").status_code == 401
 
 
 def test_logout_makes_the_token_stop_working(signed_up, client, db_session):
     token = signed_up.cookies[SESSION_COOKIE]
 
-    assert client.post("/auth/logout").status_code == 204
+    assert client.post("/api/auth/logout").status_code == 204
     client.cookies.set(SESSION_COOKIE, token)  # Replay the old token.
 
-    assert client.get("/auth/me").status_code == 401
+    assert client.get("/api/auth/me").status_code == 401
     assert db_session.scalar(select(UserSession)) is None
 
 
 def test_logout_when_signed_out_is_harmless(client):
-    assert client.post("/auth/logout").status_code == 204
+    assert client.post("/api/auth/logout").status_code == 204
 
 
 @pytest.mark.parametrize(
@@ -125,7 +125,7 @@ def test_expired_session_or_deactivated_user_returns_401(signed_up, client, db_s
     db_session.execute(change)
     db_session.commit()
 
-    assert client.get("/auth/me").status_code == 401
+    assert client.get("/api/auth/me").status_code == 401
 
 
 def test_deactivated_user_cannot_log_in(signed_up, client, db_session):
@@ -138,7 +138,7 @@ def test_deactivated_user_cannot_log_in(signed_up, client, db_session):
 def test_password_hash_never_appears_in_responses(signed_up, client, db_session):
     password_hash = db_session.scalar(select(User)).password_hash
 
-    for response in (signed_up, login(client), client.get("/auth/me")):
+    for response in (signed_up, login(client), client.get("/api/auth/me")):
         assert password_hash not in response.text
         assert "password" not in response.json()
 

@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     // During development, forward API calls to the FastAPI server.
-    proxy: { '/drives': 'http://127.0.0.1:8000', '/auth': 'http://127.0.0.1:8000' },
+    proxy: { '/api': 'http://127.0.0.1:8000' },
   },
 })
