@@ -1,6 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import { Link, Navigate, Route, Routes } from 'react-router'
 
 import { buildLineup, fetchDrives, formatWhen, safeExternalUrl, type Drive, type Filters } from './drives'
+import { DriveEditor } from './DriveEditor'
+import { LoginPage, OrganizerHome, SignupPage } from './OrganizerPages'
 
 const NO_FILTERS: Filters = { state: '', city: '', zip: '' }
 const TIER_SIZE: Record<string, string> = { 'This week': 'large', 'Next week': 'medium', Later: 'small' }
@@ -11,6 +14,20 @@ type Load =
   | { status: 'ready'; drives: Drive[]; loadedAt: Date }
 
 export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<DirectoryPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/organizer" element={<OrganizerHome />} />
+      <Route path="/organizer/orgs/:orgId/drives/new" element={<DriveEditor />} />
+      <Route path="/organizer/orgs/:orgId/drives/:driveId" element={<DriveEditor />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
+
+function DirectoryPage() {
   const [form, setForm] = useState<Filters>(NO_FILTERS)
   const [filters, setFilters] = useState<Filters>(NO_FILTERS)
   const [load, setLoad] = useState<Load>({ status: 'loading' })
@@ -48,7 +65,12 @@ export default function App() {
     <>
       <header className="masthead">
         <div className="wrap">
-          <h1 className="wordmark">BloodDrive</h1>
+          <div className="topbar">
+            <h1 className="wordmark">BloodDrive</h1>
+            <Link className="nav" to="/organizer">
+              For organizers
+            </Link>
+          </div>
           <p className="welcome">Upcoming blood drives near you. Pick one, then sign up on the organizer's official page.</p>
           <form className="filters" onSubmit={submit} aria-label="Filter drives">
             <label>

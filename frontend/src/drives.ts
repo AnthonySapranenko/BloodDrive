@@ -13,7 +13,7 @@ export type Drive = {
   postal_code: string
   registration_url: string | null
   capacity: number | null
-  status: 'published' | 'cancelled'
+  status: 'draft' | 'published' | 'cancelled'
   is_demo: boolean
   organization: {
     id: number
@@ -31,7 +31,7 @@ export async function fetchDrives(filters: Filters): Promise<Drive[]> {
   for (const [key, value] of Object.entries(filters)) {
     if (value.trim()) params.set(key, value.trim())
   }
-  const response = await fetch(`/drives?${params}`).catch(() => {
+  const response = await fetch(`/api/drives?${params}`).catch(() => {
     throw new Error("Drives could not be loaded. Check your connection and try again.")
   })
   if (response.status === 422) {

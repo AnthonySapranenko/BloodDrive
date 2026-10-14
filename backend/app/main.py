@@ -4,11 +4,14 @@ from fastapi import Depends, FastAPI, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
+from app import auth, drive_management
 from app.database import get_db, utc_now
 from app.models import BloodDrive, DriveStatus, Organization, OrganizationStatus
 from app.schemas import PublicDrive
 
 app = FastAPI(title="BloodDrive API")
+app.include_router(auth.router)
+app.include_router(drive_management.router)
 
 # Drafts are private; cancelled drives stay listed so donors who saved them see they're off.
 PUBLIC_STATUSES = (DriveStatus.PUBLISHED, DriveStatus.CANCELLED)
@@ -20,7 +23,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/drives", response_model=list[PublicDrive])
+@app.get("/api/drives", response_model=list[PublicDrive])
 def list_drives(
     db: Annotated[Session, Depends(get_db)],
     state: Annotated[str | None, Query(pattern=r"^[A-Za-z]{2}$")] = None,
