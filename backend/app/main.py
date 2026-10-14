@@ -4,13 +4,14 @@ from fastapi import Depends, FastAPI, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
-from app import auth
+from app import auth, drive_management
 from app.database import get_db, utc_now
 from app.models import BloodDrive, DriveStatus, Organization, OrganizationStatus
 from app.schemas import PublicDrive
 
 app = FastAPI(title="BloodDrive API")
 app.include_router(auth.router)
+app.include_router(drive_management.router)
 
 # Drafts are private; cancelled drives stay listed so donors who saved them see they're off.
 PUBLIC_STATUSES = (DriveStatus.PUBLISHED, DriveStatus.CANCELLED)

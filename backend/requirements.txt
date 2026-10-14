@@ -3,3 +3,4 @@ argon2-cffi==25.1.0
 fastapi[standard]==0.143.0
 pytest==9.1.1
 sqlalchemy==2.1.4
+tzdata==2026.5
